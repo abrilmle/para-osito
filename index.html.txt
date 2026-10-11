@@ -1,0 +1,206 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>¿Cuánto conocés a peque?</title>
+<link href="https://fonts.googleapis.com/css2?family=Caprasimo&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#efe6fb;--ink:#3a1f45;--soft:#7a5c88;--card:#fff8fc;--pink:#ff4f87;--sun:#ffc23d;--ok:#1f9d6b;--bad:#d6455d;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#2a1636;--ink:#fbeaf5;--soft:#c9a6d8;--card:#3b2049}}
+:root[data-theme="dark"]{--bg:#2a1636;--ink:#fbeaf5;--soft:#c9a6d8;--card:#3b2049}
+*,*:before,*:after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Nunito,system-ui,sans-serif;font-size:18px;line-height:1.5;min-height:100vh;display:flex;justify-content:center}
+main{width:100%;max-width:480px;padding:28px 20px 40px;display:flex;flex-direction:column;justify-content:center;min-height:100vh}
+h1,h2{font-family:Caprasimo,Georgia,serif;font-weight:400;line-height:1.1;margin:0 0 14px}
+h1{font-size:clamp(2.4rem,11vw,3.4rem);color:var(--pink)}
+h2{font-size:1.7rem}
+p{margin:0 0 18px;color:var(--soft)}
+.screen{display:none}.screen.on{display:block}
+button{font:inherit;cursor:pointer;border:0;border-radius:18px;padding:15px 18px;width:100%;text-align:left;transition:transform .12s}
+button:active{transform:scale(.98)}
+button:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+.go{background:var(--pink);color:#fff;font-weight:800;text-align:center;font-size:1.1rem;box-shadow:0 5px 0 #b82f60}
+.opt{background:var(--card);color:var(--ink);font-weight:700;margin-bottom:10px;border:2px solid transparent}
+.opt.ok{background:var(--ok);color:#fff}
+.opt.bad{background:var(--bad);color:#fff;animation:sh .35s}
+@keyframes sh{25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+.bar{height:10px;border-radius:9px;background:var(--card);overflow:hidden;margin-bottom:26px}
+.bar i{display:block;height:100%;width:0;background:var(--sun);border-radius:9px;transition:width .4s}
+.fb{min-height:3.2em;font-weight:800;color:var(--ink);margin:6px 0 12px}
+.big{font-size:4rem;line-height:1;margin-bottom:12px}
+.letter{background:var(--card);border-radius:22px;padding:24px 22px;margin-top:18px;border:2px dashed var(--pink);color:var(--ink);white-space:pre-line}
+.sm{font-size:.85rem;margin-top:14px}
+.fall{position:fixed;top:-40px;font-size:26px;pointer-events:none;animation:f linear forwards}
+@keyframes f{to{transform:translateY(110vh) rotate(260deg)}}
+@media (prefers-reduced-motion:reduce){.fall{display:none}.opt.bad{animation:none}}
+.sub{margin-top:12px;background:var(--card);color:var(--ink);font-weight:800}
+.face{font-size:5rem;text-align:center;line-height:1;margin:6px 0}
+.mt{height:18px;border-radius:12px;background:var(--card);overflow:hidden;margin:14px 0}
+.mt i{display:block;height:100%;width:50%;background:var(--bad);transition:width .25s}
+.row{display:flex;gap:10px}.row button{text-align:center;font-weight:800}
+.tiles{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:20px 0}
+.tile{width:54px;height:64px;padding:0;text-align:center;font-family:Caprasimo,Georgia,serif;font-size:1.8rem;background:var(--card);color:var(--ink)}
+.tile.on{background:var(--pink);color:#fff}
+.tile.bad{animation:sh .35s}
+.slots{text-align:center;font-family:Caprasimo,Georgia,serif;font-size:2.4rem;color:var(--pink);min-height:1.3em;letter-spacing:.12em}
+.back{background:none;color:var(--soft);text-align:center;margin-top:10px;font-weight:700}
+input[type=range]{width:100%;accent-color:var(--pink);margin:24px 0 8px}
+.lr{display:flex;justify-content:space-between;font-weight:800;color:var(--soft)}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0}
+.cell{height:84px;padding:0;text-align:center;font-size:2.4rem;background:var(--card)}
+#sky{width:100%;display:block;border-radius:22px;background:radial-gradient(circle at 50% 30%,#4a2a86,#1a0f3d)}
+.st{cursor:pointer}
+@keyframes tw{50%{opacity:.35;transform:scale(1.6)}}
+.st.nx{animation:tw 1s infinite;transform-box:fill-box;transform-origin:center}
+@media (prefers-reduced-motion:reduce){.st.nx{animation:none}}
+</style>
+</head>
+<body>
+<main>
+  <section class="screen on" id="s0">
+    <div class="big">🐻💌</div>
+    <h1>Osito, ¿cuánto conocés a peque?</h1>
+    <p>Preparé un quiz solo para vos. Son 6 preguntas y podés intentar las veces que quieras. Ojo, que hay trampa.</p>
+    <button class="go" onclick="start()">Empezar</button>
+  </section>
+
+  <section class="screen" id="s1">
+    <div class="bar"><i id="pb"></i></div>
+    <h2 id="q"></h2>
+    <div id="opts"></div>
+    <div class="fb" id="fb" aria-live="polite"></div>
+    <button class="go" id="nx" style="display:none" onclick="next()">Siguiente</button>
+  </section>
+
+  <section class="screen" id="s2">
+    <div class="big">🏆</div>
+    <h1>¡Sos el mejor osito!</h1>
+    <p id="res"></p>
+    <button class="go" onclick="openL()" id="ob">Abrir mi sorpresa 💌</button>
+    <div class="letter" id="ltr" hidden>Osito:
+
+Empezamos a hablar el 1 de abril, y fue lo mejor que me pasó este año. Nos conocimos en el trabajo y, sin darme cuenta, te volviste mi lugar favorito.
+
+Gracias por quedarte con mi risa malvada, mi cara de enojada y mis manos y pies chiquitos. Y por todos los guisos que todavía nos faltan comer juntos.
+
+Te quiero muchísimo.
+
+Tu peque 🐻💗</div>
+    <p class="sm" id="hint" hidden>Tocá el título para volver a jugar el quiz.</p>
+    <button class="sub" onclick="show('s3')">Más juegos 🎮</button>
+  </section>
+
+  <section class="screen" id="s3">
+    <h1>Más juegos</h1>
+    <p>Tres jueguitos extra, sin preguntas.</p>
+    <button class="opt" onclick="eStart()">😡 Calmá a peque</button>
+    <button class="opt" onclick="aStart()">✨ La constelación de Amelia</button>
+    <button class="opt" onclick="mStart()">🍲 Guiso al ataque</button>
+    <button class="back" onclick="show('s2')">Volver</button>
+  </section>
+
+  <section class="screen" id="s4">
+    <h2>Calmá a peque antes de que muerda</h2>
+    <div class="face" id="ef">😠</div>
+    <div class="mt"><i id="mi"></i></div>
+    <p id="em" class="fb">El enojo sube solo. Llevalo a cero.</p>
+    <div class="row" id="eb">
+      <button class="opt" onclick="eHit(-14,'Le diste la razón. Qué sabio 🐻')">Darle la razón</button>
+      <button class="opt" onclick="eHit(22,'La contradijiste… se viene la mordida 😬')">Contradecirla</button>
+    </div>
+    <button class="go" id="er" style="display:none" onclick="eStart()">Intentar de nuevo</button>
+    <button class="back" onclick="eStop()">Volver</button>
+  </section>
+
+  <section class="screen" id="s5">
+    <h2>La constelación de Amelia</h2>
+    <p>Uní las estrellas que titilan, una por una, y mirá qué aparece en el cielo.</p>
+    <svg id="sky" viewBox="0 0 300 300" role="img" aria-label="Cielo con estrellas"></svg>
+    
+    <p id="am" class="fb"></p>
+    <button class="sub" onclick="aStart()">Dibujar de nuevo</button>
+    <button class="back" onclick="show('s3')">Volver</button>
+  </section>
+
+  <section class="screen" id="s6">
+    <h2>Guiso al ataque</h2>
+    <p>Tocá los guisos 🍲 antes de que desaparezcan. Cuidado con la risa malvada 😈: te resta puntos. Juntá 10.</p>
+    <div class="lr"><span id="gs">Guisos: 0 / 10</span></div>
+    <div class="grid" id="gg"></div>
+    <p id="mm" class="fb"></p>
+    <button class="sub" onclick="mStart()">Empezar de nuevo</button>
+    <button class="back" onclick="show('s3')">Volver</button>
+  </section>
+</main>
+<script>
+var Q=[
+{q:"¿Dónde nos conocimos?",o:["En un boliche","En el trabajo","En una app","En un viaje"],a:1,ok:"¡Sí! Compañeros de laburo antes de ser compañeros de todo."},
+{q:"¿Qué día empezamos a hablar?",o:["14 de febrero","25 de diciembre","1 de abril de 2026","1 de mayo"],a:2,ok:"¡Exacto! Y no fue una inocentada 😏"},
+{q:"¿Cuál es la comida favorita de osito?",o:["Sushi","Pizza","Milanesas","Guiso"],a:3,ok:"El guiso manda. Siempre."},
+{q:"¿Cómo es la risa de peque?",o:["De hada","Tímida","Malvada 😈","Casi inexistente"],a:2,ok:"Y a vos te encanta, no lo niegues."},
+{q:"¿Qué tiene chiquito peque?",o:["Las orejas","Los pies y las manos","La paciencia","Nada, es enorme"],a:1,ok:"Chiquitos, pero con mucho carácter."},
+{q:"¿Qué cara de peque te derrite?",o:["Cara de dormida","Cara de hambre","Cara de enojada","Cara de nada"],a:2,ok:"La cara de enojada, ¡clásico!"}
+];
+var i=0,t=0,done=false;
+function show(n){document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('on')});document.getElementById(n).classList.add('on');window.scrollTo(0,0)}
+function start(){i=0;t=0;show('s1');load()}
+function load(){var c=Q[i];done=false;t=t;document.getElementById('pb').style.width=(i/Q.length*100)+'%';
+document.getElementById('q').textContent=c.q;document.getElementById('fb').textContent='';document.getElementById('nx').style.display='none';
+var h=document.getElementById('opts');h.innerHTML='';
+c.o.forEach(function(x,k){var b=document.createElement('button');b.className='opt';b.textContent=x;b.onclick=function(){pick(b,k)};h.appendChild(b)})}
+function pick(b,k){if(done)return;var c=Q[i],f=document.getElementById('fb');
+if(k===c.a){done=true;b.classList.add('ok');f.textContent=c.ok;
+document.getElementById('nx').style.display='block';document.getElementById('nx').textContent=(i===Q.length-1)?'Ver resultado':'Siguiente'}
+else{t++;b.classList.remove('bad');void b.offsetWidth;b.classList.add('bad');b.disabled=true;f.textContent=['Casi, osito… pero no 🙈','Mmm, no. Pensalo bien 😏','Esa no es, ¡dale que podés!'][t%3]}}
+function next(){i++;if(i<Q.length){load()}else{document.getElementById('pb').style.width='100%';
+document.getElementById('res').textContent=t===0?'¡Cero errores! Me conocés de memoria.':'Tuviste '+t+' tropiezo'+(t>1?'s':'')+', pero llegaste igual. Eso también cuenta.';show('s2');hearts()}}
+function openL(){document.getElementById('ltr').hidden=false;document.getElementById('ob').style.display='none';document.getElementById('hint').hidden=false;hearts()}
+function hearts(){var e=['💗','🐻','💌','✨','💖'];for(var k=0;k<22;k++){(function(k){setTimeout(function(){var d=document.createElement('div');d.className='fall';d.textContent=e[k%5];d.style.left=(Math.random()*95)+'vw';d.style.animationDuration=(3+Math.random()*2.5)+'s';document.body.appendChild(d);setTimeout(function(){d.remove()},6000)},k*120)})(k)}}
+var mt=50,mT=null;
+function eStart(){mt=50;document.getElementById('eb').style.display='flex';document.getElementById('er').style.display='none';document.getElementById('em').textContent='El enojo sube solo. Llevalo a cero.';eDraw();show('s4');clearInterval(mT);mT=setInterval(function(){mt+=3;eDraw()},1000)}
+function eStop(){clearInterval(mT);show('s3')}
+function eHit(d,m){mt+=d;eDraw(m)}
+function eEnd(m){clearInterval(mT);document.getElementById('em').textContent=m;document.getElementById('eb').style.display='none';document.getElementById('er').style.display='block'}
+function eDraw(m){mt=Math.max(0,Math.min(100,mt));document.getElementById('mi').style.width=mt+'%';document.getElementById('ef').textContent=mt<=0?'🥰':mt<30?'🙂':mt<70?'😠':'😡';
+if(m)document.getElementById('em').textContent=m;
+if(mt>=100){document.getElementById('ef').textContent='🦷';eEnd('¡ÑAM! Mordida de peque. Otra vez, osito.')}
+else if(mt<=0){eEnd('Peque está en paz 💗 (por ahora)');hearts()}}
+var ap=0;
+function aStart(){ap=0;var L='AMELIA'.split(''),k,j,x;for(k=L.length-1;k>0;k--){j=Math.floor(Math.random()*(k+1));x=L[k];L[k]=L[j];L[j]=x}
+var h=document.getElementById('at');h.innerHTML='';document.getElementById('as').textContent='';document.getElementById('am').textContent='';
+L.forEach(function(c){var b=document.createElement('button');b.className='tile';b.textContent=c;b.onclick=function(){aTap(b,c)};h.appendChild(b)});show('s5')}
+function aTap(b,c){if(b.classList.contains('on'))return;
+if(c==='AMELIA'.charAt(ap)){b.classList.add('on');ap++;document.getElementById('as').textContent='AMELIA'.slice(0,ap);
+if(ap===6){document.getElementById('am').textContent='Amelia 💗 Nuestro sueño favorito.';hearts()}}
+else{b.classList.remove('bad');void b.offsetWidth;b.classList.add('bad')}}
+var gp=0,gT=null,gOn=false;
+function mStart(){gp=0;gOn=true;document.getElementById('mm').textContent='';gDraw();var g=document.getElementById('gg');g.innerHTML='';for(var k=0;k<9;k++){var c=document.createElement('button');c.className='cell';c.onclick=gTap;g.appendChild(c)}show('s6');clearInterval(gT);gT=setInterval(gSpawn,800)}
+function gSpawn(){if(!document.getElementById('s6').classList.contains('on')){clearInterval(gT);return}var c=document.querySelectorAll('.cell');c.forEach(function(x){x.textContent='';x.dataset.t=''});var n=c[Math.floor(Math.random()*9)],bad=Math.random()<.25;n.textContent=bad?'😈':'🍲';n.dataset.t=bad?'b':'g'}
+function gTap(e){if(!gOn)return;var b=e.currentTarget,t=b.dataset.t;if(!t)return;b.textContent='';b.dataset.t='';if(t==='g')gp++;else gp=Math.max(0,gp-2);gDraw();if(gp>=10){gOn=false;clearInterval(gT);document.getElementById('mm').textContent='¡Osito comió guiso hasta explotar! 🍲💗';hearts()}}
+function gDraw(){document.getElementById('gs').textContent='Guisos: '+gp+' / 10'}
+function mIn(v){document.getElementById('mm').textContent=v>70?'¿Seguro, osito? Mirá que muerdo 🦷':v>30?'Mmm, eso no va a durar…':'Todo en orden.'}
+function mBack(){var r=document.getElementById('mr'),x=setInterval(function(){r.value=Math.max(0,r.value-5);if(+r.value<=0){clearInterval(x);document.getElementById('mm').textContent='Manda peque 👑 Es ley.'}},25)}
+var SP=[[150,262],[80,195],[45,135],[60,82],[105,64],[150,108],[195,64],[240,82],[255,135],[220,195]],an=0,NS='http://www.w3.org/2000/svg';
+function aStart(){an=0;var s=document.getElementById('sky'),h='',k,p;
+for(k=0;k<40;k++){h+='<circle cx="'+Math.round(Math.random()*300)+'" cy="'+Math.round(Math.random()*300)+'" r="'+(Math.random()*1.2+.3).toFixed(1)+'" fill="#fff" opacity=".6"/>'}
+h+='<path id="ht" fill="#ff4f87" style="opacity:0;transition:opacity 1.2s" d="M'+SP.map(function(q){return q.join(',')}).join('L')+'Z"/>';
+h+='<g id="ln" stroke="#ffc23d" stroke-width="2.5" stroke-linecap="round"></g>';
+for(k=0;k<SP.length;k++){p=SP[k];h+='<g class="st'+(k===0?' nx':'')+'" data-k="'+k+'"><circle cx="'+p[0]+'" cy="'+p[1]+'" r="18" fill="transparent"/><circle class="d" cx="'+p[0]+'" cy="'+p[1]+'" r="6" fill="#fff"/></g>'}
+h+='<text id="nm" x="150" y="152" text-anchor="middle" font-family="Caprasimo,Georgia,serif" font-size="40" fill="#fff" style="opacity:0;transition:opacity 1.2s">Amelia</text>';
+s.innerHTML=h;
+s.querySelectorAll('.st').forEach(function(g){g.addEventListener('click',function(){aTap(+g.getAttribute('data-k'),g)})});
+document.getElementById('am').textContent='';show('s5')}
+function aLine(a,b){var l=document.createElementNS(NS,'line');l.setAttribute('x1',a[0]);l.setAttribute('y1',a[1]);l.setAttribute('x2',b[0]);l.setAttribute('y2',b[1]);document.getElementById('ln').appendChild(l)}
+function aTap(k,g){var m=document.getElementById('am');if(k<an)return;if(k!==an){m.textContent='Seguí la estrella que titila ✨';return}
+m.textContent='';var d=g.querySelector('.d');d.setAttribute('fill','#ffc23d');d.setAttribute('r','8');g.classList.remove('nx');
+if(k>0)aLine(SP[k-1],SP[k]);an++;
+if(an<SP.length){document.querySelectorAll('#sky .st')[an].classList.add('nx')}
+else{aLine(SP[k],SP[0]);document.getElementById('ht').style.opacity='.4';document.getElementById('nm').style.opacity='1';m.textContent='Nuestro sueño, escrito en el cielo ✨';hearts()}}
+document.querySelector('#s2 h1').onclick=start;
+</script>
+</body>
+</html>
